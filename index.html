@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Spider Web</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        canvas {
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+
+// Ekranın ölçüsü
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+
+// Mouse
+const mouse = {
+    x: -1000,
+    y: -1000
+};
+
+
+// Mouse hərəkəti
+window.addEventListener("mousemove", function(e) {
+
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+
+});
+
+
+// Nöqtələr
+const points = [];
+
+const numberOfPoints = 160;
+
+
+// Nöqtələri yaradırıq
+for (let i = 0; i < numberOfPoints; i++) {
+
+    points.push({
+
+        x: Math.random() * canvas.width,
+
+        y: Math.random() * canvas.height,
+
+        // Nöqtənin ilkin yeri
+        baseX: 0,
+        baseY: 0,
+
+        // Hərəkət sürəti
+        vx: 0,
+        vy: 0
+
+    });
+
+}
+
+
+// İlkin koordinatları yadda saxla
+for (let point of points) {
+
+    point.baseX = point.x;
+    point.baseY = point.y;
+
+}
+
+
+// Animasiya
+function animate() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    // =========================
+    // NÖQTƏLƏRİN HƏRƏKƏTİ
+    // =========================
+
+    for (let point of points) {
+
+        const dx = mouse.x - point.x;
+        const dy = mouse.y - point.y;
+
+        const distance = Math.sqrt(
+            dx * dx + dy * dy
+        );
+
+
+        // Mouse yaxınlaşanda
+        if (distance < 180) {
+
+            // Mouse-dan uzaqlaşdır
+            const force = (180 - distance) / 180;
+
+            point.vx -= (dx / distance) * force * 1.5;
+
+            point.vy -= (dy / distance) * force * 1.5;
+
+        }
+
+
+        // Nöqtə öz yerinə qayıtmağa çalışır
+        const returnX = point.baseX - point.x;
+        const returnY = point.baseY - point.y;
+
+        point.vx += returnX * 0.015;
+        point.vy += returnY * 0.015;
+
+
+        // Sürtünmə
+        point.vx *= 0.90;
+        point.vy *= 0.90;
+
+
+        // Hərəkət
+        point.x += point.vx;
+        point.y += point.vy;
+
+    }
+
+
+    // =========================
+    // NÖQTƏLƏR ARASINDA TOR
+    // =========================
+
+    for (let i = 0; i < points.length; i++) {
+
+        for (let j = i + 1; j < points.length; j++) {
+
+            const a = points[i];
+            const b = points[j];
+
+
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+
+            const distance = Math.sqrt(
+                dx * dx + dy * dy
+            );
+
+
+            // Yaxın nöqtələri birləşdir
+            if (distance < 115) {
+
+                // Mouse-a yaxınlıq
+                const mouseDistanceA = Math.hypot(
+                    mouse.x - a.x,
+                    mouse.y - a.y
+                );
+
+                const mouseDistanceB = Math.hypot(
+                    mouse.x - b.x,
+                    mouse.y - b.y
+                );
+
+
+                // Yalnız mouse-a yaxın hissədə güclü tor
+                const mouseEffect =
+                    Math.max(
+                        0,
+                        1 - Math.min(
+                            mouseDistanceA,
+                            mouseDistanceB
+                        ) / 250
+                    );
+
+
+                if (mouseEffect > 0) {
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(a.x, a.y);
+
+                    ctx.lineTo(b.x, b.y);
+
+                    ctx.strokeStyle =
+                        `rgba(255,255,255,${mouseEffect * 0.8})`;
+
+                    ctx.lineWidth = 1;
+
+                    ctx.stroke();
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    // =========================
+    // NÖQTƏLƏR
+    // =========================
+
+    for (let point of points) {
+
+        const distance = Math.hypot(
+            mouse.x - point.x,
+            mouse.y - point.y
+        );
+
+
+        // Mouse yaxınsa nöqtə böyüsün
+        let size = 1.5;
+
+        if (distance < 180) {
+
+            size =
+                1.5 +
+                (180 - distance) / 50;
+
+        }
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            point.x,
+            point.y,
+            size,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle = "white";
+
+        ctx.fill();
+
+    }
+
+
+    requestAnimationFrame(animate);
+
+}
+
+
+animate();
+
+
+// =========================
+// EKRAN ÖLÇÜSÜ
+// =========================
+
+window.addEventListener("resize", function() {
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+});
+
+</script>
+
+</body>
+</html>
