@@ -1,97 +1,825 @@
 <!DOCTYPE html>
 <html lang="az">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Interactive Spider Web</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        html, body {
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #000;
-        }
+<title>SPIDER WEB</title>
 
-        canvas {
-            position: fixed;
-            left: 0;
-            top: 0;
-        }
-    </style>
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#030305;
+    color:white;
+    font-family:Arial, sans-serif;
+    overflow-x:hidden;
+    cursor:none;
+}
+
+/* ================= BACKGROUND ================= */
+
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+}
+
+.background{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(90,0,120,.18), transparent 45%),
+        radial-gradient(circle at 20% 20%, rgba(0,120,255,.12), transparent 30%);
+    z-index:-1;
+}
+
+/* ================= CUSTOM CURSOR ================= */
+
+.cursor{
+    position:fixed;
+    width:25px;
+    height:25px;
+    border:2px solid #fff;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    z-index:9999;
+    transition:
+        width .15s,
+        height .15s,
+        background .15s;
+    mix-blend-mode:difference;
+}
+
+.cursor::after{
+    content:"";
+    position:absolute;
+    width:5px;
+    height:5px;
+    background:white;
+    border-radius:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+/* ================= WELCOME ================= */
+
+#welcome{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at center, #18002c 0%, #050008 45%, #000 100%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:1000;
+    transition:1s;
+}
+
+#welcome.hide{
+    opacity:0;
+    pointer-events:none;
+    transform:scale(1.1);
+}
+
+.welcome-small{
+    letter-spacing:8px;
+    color:#b57cff;
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+.welcome-title{
+    font-size:clamp(60px,12vw,150px);
+    font-weight:900;
+    letter-spacing:10px;
+    text-shadow:
+        0 0 20px #9b00ff,
+        0 0 50px #7a00ff,
+        0 0 100px #4000ff;
+}
+
+.welcome-text{
+    margin-top:20px;
+    color:#aaa;
+    font-size:18px;
+    text-align:center;
+}
+
+.enter-btn{
+    margin-top:45px;
+    padding:18px 50px;
+    border:1px solid #a200ff;
+    background:transparent;
+    color:white;
+    font-size:17px;
+    letter-spacing:4px;
+    border-radius:50px;
+    cursor:none;
+    transition:.3s;
+    box-shadow:0 0 20px rgba(155,0,255,.3);
+}
+
+.enter-btn:hover{
+    background:#8b00ff;
+    box-shadow:
+        0 0 20px #8b00ff,
+        0 0 60px #8b00ff;
+    transform:scale(1.08);
+}
+
+/* ================= MAIN ================= */
+
+main{
+    min-height:100vh;
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    padding:30px;
+}
+
+.hero h1{
+    font-size:clamp(60px,12vw,150px);
+    letter-spacing:15px;
+    text-shadow:
+        0 0 15px #8c00ff,
+        0 0 50px #7000ff,
+        0 0 100px #2600ff;
+}
+
+.hero p{
+    color:#aaa;
+    margin-top:20px;
+    font-size:18px;
+}
+
+.scroll{
+    margin-top:70px;
+    color:#777;
+    animation:float 2s infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(10px)}
+}
+
+/* ================= SECTION ================= */
+
+.games-section{
+    min-height:100vh;
+    padding:100px 7%;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.3),
+            rgba(0,0,0,.7)
+        );
+}
+
+.section-title{
+    text-align:center;
+    font-size:45px;
+    margin-bottom:15px;
+    text-shadow:0 0 20px #8b00ff;
+}
+
+.section-subtitle{
+    text-align:center;
+    color:#777;
+    margin-bottom:60px;
+}
+
+/* ================= GAME CARDS ================= */
+
+.games{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.game-card{
+    position:relative;
+    min-height:280px;
+    padding:35px 25px;
+    background:rgba(15,15,20,.7);
+    border:1px solid #27202d;
+    border-radius:20px;
+    backdrop-filter:blur(15px);
+    overflow:hidden;
+    transition:.4s;
+    cursor:none;
+}
+
+.game-card::before{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+    background:#7200ff;
+    filter:blur(80px);
+    opacity:.15;
+    top:-50px;
+    right:-50px;
+}
+
+.game-card:hover{
+    transform:translateY(-12px) scale(1.02);
+    border-color:#9d00ff;
+    box-shadow:
+        0 20px 50px rgba(128,0,255,.2),
+        inset 0 0 30px rgba(128,0,255,.05);
+}
+
+.game-icon{
+    font-size:55px;
+    margin-bottom:25px;
+}
+
+.game-card h3{
+    font-size:25px;
+    margin-bottom:12px;
+}
+
+.game-card p{
+    color:#888;
+    line-height:1.5;
+}
+
+.play-btn{
+    margin-top:25px;
+    border:1px solid #7d00ff;
+    background:transparent;
+    color:white;
+    padding:10px 20px;
+    border-radius:20px;
+    cursor:none;
+    transition:.3s;
+}
+
+.play-btn:hover{
+    background:#7d00ff;
+    box-shadow:0 0 20px #7d00ff;
+}
+
+/* ================= GAME AREA ================= */
+
+#gameArea{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.96);
+    z-index:500;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding:20px;
+}
+
+#gameArea.active{
+    display:flex;
+}
+
+.game-window{
+    width:min(800px,95vw);
+    height:min(600px,80vh);
+    background:#09090d;
+    border:1px solid #5e00a8;
+    border-radius:20px;
+    box-shadow:
+        0 0 50px rgba(100,0,255,.25);
+    position:relative;
+    overflow:hidden;
+}
+
+.close-game{
+    position:absolute;
+    right:20px;
+    top:15px;
+    font-size:25px;
+    color:#aaa;
+    cursor:none;
+    z-index:10;
+}
+
+.close-game:hover{
+    color:white;
+}
+
+.game-header{
+    height:60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+    border-bottom:1px solid #222;
+}
+
+.game-header h2{
+    color:#c084ff;
+}
+
+/* ================= MEMORY ================= */
+
+.memory-grid{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.memory-card{
+    height:100px;
+    background:#15151d;
+    border:1px solid #333;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:35px;
+    cursor:none;
+    transition:.3s;
+}
+
+.memory-card:hover{
+    border-color:#9d00ff;
+}
+
+.memory-card.open{
+    background:#35005c;
+}
+
+.memory-card.matched{
+    background:#102d1c;
+    border-color:#00ff88;
+}
+
+/* ================= AIM GAME ================= */
+
+#aimGame{
+    position:relative;
+    height:calc(100% - 60px);
+}
+
+.target{
+    width:50px;
+    height:50px;
+    background:#a000ff;
+    border-radius:50%;
+    position:absolute;
+    box-shadow:
+        0 0 20px #a000ff,
+        0 0 50px #a000ff;
+    cursor:none;
+}
+
+/* ================= SNAKE ================= */
+
+#snakeCanvas{
+    display:block;
+    margin:auto;
+    background:#030305;
+    max-width:90%;
+    max-height:90%;
+}
+
+.snake-controls{
+    text-align:center;
+    margin-top:15px;
+    color:#777;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    padding:70px 20px;
+    text-align:center;
+    color:#555;
+    border-top:1px solid #111;
+}
+
+footer span{
+    color:#9d00ff;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:600px){
+
+    body{
+        cursor:auto;
+    }
+
+    .cursor{
+        display:none;
+    }
+
+    .welcome-title{
+        font-size:55px;
+        letter-spacing:5px;
+    }
+
+    .hero h1{
+        letter-spacing:5px;
+    }
+
+    .memory-grid{
+        grid-template-columns:repeat(4,1fr);
+        padding:15px;
+        gap:8px;
+    }
+
+    .memory-card{
+        height:65px;
+        font-size:25px;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<canvas id="canvas"></canvas>
+<div class="background"></div>
+
+<canvas id="particles"></canvas>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- ================= WELCOME ================= -->
+
+<section id="welcome">
+
+    <div class="welcome-small">
+        WELCOME TO
+    </div>
+
+    <div class="welcome-title">
+        SPIDER
+    </div>
+
+    <div class="welcome-text">
+        Enter the web.<br>
+        Explore. Play. Survive.
+    </div>
+
+    <button class="enter-btn" onclick="enterSite()">
+        ENTER THE WEB
+    </button>
+
+</section>
+
+
+<!-- ================= MAIN ================= -->
+
+<main>
+
+<section class="hero">
+
+    <h1>SPIDER WEB</h1>
+
+    <p>
+        A dark interactive world full of games and effects.
+    </p>
+
+    <div class="scroll">
+        ↓ SCROLL TO EXPLORE ↓
+    </div>
+
+</section>
+
+
+<section class="games-section">
+
+    <h2 class="section-title">
+        CHOOSE YOUR GAME
+    </h2>
+
+    <p class="section-subtitle">
+        Choose your challenge and enter the web.
+    </p>
+
+
+    <div class="games">
+
+        <!-- MEMORY -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🧠
+            </div>
+
+            <h3>Memory</h3>
+
+            <p>
+                Find matching spider symbols.
+                Test your memory.
+            </p>
+
+            <button class="play-btn"
+            onclick="openGame('memory')">
+                PLAY
+            </button>
+
+        </div>
+
+
+        <!-- AIM -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🎯
+            </div>
+
+            <h3>Aim Hunter</h3>
+
+            <p>
+                Click the target as quickly
+                as possible.
+            </p>
+
+            <button class="play-btn"
+            onclick="openGame('aim')">
+                PLAY
+            </button>
+
+        </div>
+
+
+        <!-- SNAKE -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🐍
+            </div>
+
+            <h3>Snake</h3>
+
+            <p>
+                Eat the glowing food and
+                become longer.
+            </p>
+
+            <button class="play-btn"
+            onclick="openGame('snake')">
+                PLAY
+            </button>
+
+        </div>
+
+
+        <!-- SPIDER -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🕷️
+            </div>
+
+            <h3>Spider Mode</h3>
+
+            <p>
+                Move your mouse and control
+                the spider web.
+            </p>
+
+            <button class="play-btn"
+            onclick="spiderMode()">
+                ACTIVATE
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    Created in the <span>Spider Web</span>.
+
+</footer>
+
+</main>
+
+
+<!-- ================= GAME WINDOW ================= -->
+
+<div id="gameArea">
+
+    <div class="game-window">
+
+        <div class="close-game"
+        onclick="closeGame()">
+            ✕
+        </div>
+
+
+        <!-- MEMORY -->
+
+        <div id="memoryGame">
+
+            <div class="game-header">
+
+                <h2>Memory</h2>
+
+                <span id="memoryScore">
+                    0 / 8
+                </span>
+
+            </div>
+
+            <div class="memory-grid"
+            id="memoryGrid">
+            </div>
+
+        </div>
+
+
+        <!-- AIM -->
+
+        <div id="aimGame"
+        style="display:none">
+
+            <div class="game-header">
+
+                <h2>Aim Hunter</h2>
+
+                <span>
+                    Score:
+                    <b id="aimScore">0</b>
+                </span>
+
+            </div>
+
+            <div
+            id="target"
+            class="target">
+            </div>
+
+        </div>
+
+
+        <!-- SNAKE -->
+
+        <div id="snakeGame"
+        style="display:none">
+
+            <div class="game-header">
+
+                <h2>Snake</h2>
+
+                <span>
+                    Score:
+                    <b id="snakeScore">0</b>
+                </span>
+
+            </div>
+
+            <canvas
+            id="snakeCanvas"
+            width="500"
+            height="400">
+            </canvas>
+
+            <div class="snake-controls">
+                Use W A S D or Arrow Keys
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <script>
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+/* ==================================================
+   CUSTOM CURSOR
+================================================== */
 
+const cursor =
+document.getElementById("cursor");
 
-// Ekranın ölçüsü
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+document.addEventListener("mousemove",(e)=>{
 
+    cursor.style.left =
+    e.clientX+"px";
 
-// Mouse
-const mouse = {
-    x: -1000,
-    y: -1000
-};
-
-
-// Mouse hərəkəti
-window.addEventListener("mousemove", function(e) {
-
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    cursor.style.top =
+    e.clientY+"px";
 
 });
 
 
-// Nöqtələr
-const points = [];
+document.querySelectorAll("button,.game-card,.game-card *")
+.forEach(el=>{
 
-const numberOfPoints = 160;
+    el.addEventListener("mouseenter",()=>{
+
+        cursor.style.width="45px";
+        cursor.style.height="45px";
+        cursor.style.background="rgba(255,255,255,.1)";
+
+    });
+
+    el.addEventListener("mouseleave",()=>{
+
+        cursor.style.width="25px";
+        cursor.style.height="25px";
+        cursor.style.background="transparent";
+
+    });
+
+});
 
 
-// Nöqtələri yaradırıq
-for (let i = 0; i < numberOfPoints; i++) {
+/* ==================================================
+   WELCOME
+================================================== */
 
-    points.push({
+function enterSite(){
 
-        x: Math.random() * canvas.width,
+    document
+    .getElementById("welcome")
+    .classList.add("hide");
 
-        y: Math.random() * canvas.height,
+}
 
-        // Nöqtənin ilkin yeri
-        baseX: 0,
-        baseY: 0,
 
-        // Hərəkət sürəti
-        vx: 0,
-        vy: 0
+/* ==================================================
+   PARTICLES
+================================================== */
+
+const canvas =
+document.getElementById("particles");
+
+const ctx =
+canvas.getContext("2d");
+
+let particles=[];
+
+function resizeCanvas(){
+
+    canvas.width =
+    window.innerWidth;
+
+    canvas.height =
+    window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener(
+"resize",
+resizeCanvas
+);
+
+
+for(let i=0;i<100;i++){
+
+    particles.push({
+
+        x:Math.random()*innerWidth,
+
+        y:Math.random()*innerHeight,
+
+        size:Math.random()*2+1,
+
+        speed:Math.random()*.5+.1
 
     });
 
 }
 
 
-// İlkin koordinatları yadda saxla
-for (let point of points) {
-
-    point.baseX = point.x;
-    point.baseY = point.y;
-
-}
-
-
-// Animasiya
-function animate() {
+function animateParticles(){
 
     ctx.clearRect(
         0,
@@ -100,181 +828,635 @@ function animate() {
         canvas.height
     );
 
+    particles.forEach(p=>{
 
-    // =========================
-    // NÖQTƏLƏRİN HƏRƏKƏTİ
-    // =========================
+        p.y -= p.speed;
 
-    for (let point of points) {
-
-        const dx = mouse.x - point.x;
-        const dy = mouse.y - point.y;
-
-        const distance = Math.sqrt(
-            dx * dx + dy * dy
-        );
-
-
-        // Mouse yaxınlaşanda
-        if (distance < 180) {
-
-            // Mouse-dan uzaqlaşdır
-            const force = (180 - distance) / 180;
-
-            point.vx -= (dx / distance) * force * 1.5;
-
-            point.vy -= (dy / distance) * force * 1.5;
-
-        }
-
-
-        // Nöqtə öz yerinə qayıtmağa çalışır
-        const returnX = point.baseX - point.x;
-        const returnY = point.baseY - point.y;
-
-        point.vx += returnX * 0.015;
-        point.vy += returnY * 0.015;
-
-
-        // Sürtünmə
-        point.vx *= 0.90;
-        point.vy *= 0.90;
-
-
-        // Hərəkət
-        point.x += point.vx;
-        point.y += point.vy;
-
-    }
-
-
-    // =========================
-    // NÖQTƏLƏR ARASINDA TOR
-    // =========================
-
-    for (let i = 0; i < points.length; i++) {
-
-        for (let j = i + 1; j < points.length; j++) {
-
-            const a = points[i];
-            const b = points[j];
-
-
-            const dx = a.x - b.x;
-            const dy = a.y - b.y;
-
-            const distance = Math.sqrt(
-                dx * dx + dy * dy
-            );
-
-
-            // Yaxın nöqtələri birləşdir
-            if (distance < 115) {
-
-                // Mouse-a yaxınlıq
-                const mouseDistanceA = Math.hypot(
-                    mouse.x - a.x,
-                    mouse.y - a.y
-                );
-
-                const mouseDistanceB = Math.hypot(
-                    mouse.x - b.x,
-                    mouse.y - b.y
-                );
-
-
-                // Yalnız mouse-a yaxın hissədə güclü tor
-                const mouseEffect =
-                    Math.max(
-                        0,
-                        1 - Math.min(
-                            mouseDistanceA,
-                            mouseDistanceB
-                        ) / 250
-                    );
-
-
-                if (mouseEffect > 0) {
-
-                    ctx.beginPath();
-
-                    ctx.moveTo(a.x, a.y);
-
-                    ctx.lineTo(b.x, b.y);
-
-                    ctx.strokeStyle =
-                        `rgba(255,255,255,${mouseEffect * 0.8})`;
-
-                    ctx.lineWidth = 1;
-
-                    ctx.stroke();
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-    // =========================
-    // NÖQTƏLƏR
-    // =========================
-
-    for (let point of points) {
-
-        const distance = Math.hypot(
-            mouse.x - point.x,
-            mouse.y - point.y
-        );
-
-
-        // Mouse yaxınsa nöqtə böyüsün
-        let size = 1.5;
-
-        if (distance < 180) {
-
-            size =
-                1.5 +
-                (180 - distance) / 50;
-
-        }
-
+        if(p.y<0)
+            p.y=canvas.height;
 
         ctx.beginPath();
 
         ctx.arc(
-            point.x,
-            point.y,
-            size,
+            p.x,
+            p.y,
+            p.size,
             0,
-            Math.PI * 2
+            Math.PI*2
         );
 
-        ctx.fillStyle = "white";
+        ctx.fillStyle=
+        "rgba(170,70,255,.5)";
 
         ctx.fill();
+
+    });
+
+    requestAnimationFrame(
+        animateParticles
+    );
+
+}
+
+animateParticles();
+
+
+/* ==================================================
+   GAME SYSTEM
+================================================== */
+
+function openGame(game){
+
+    document
+    .getElementById("gameArea")
+    .classList.add("active");
+
+    document.getElementById("memoryGame")
+    .style.display="none";
+
+    document.getElementById("aimGame")
+    .style.display="none";
+
+    document.getElementById("snakeGame")
+    .style.display="none";
+
+
+    if(game==="memory"){
+
+        document.getElementById("memoryGame")
+        .style.display="block";
+
+        startMemory();
 
     }
 
 
-    requestAnimationFrame(animate);
+    if(game==="aim"){
+
+        document.getElementById("aimGame")
+        .style.display="block";
+
+        startAim();
+
+    }
+
+
+    if(game==="snake"){
+
+        document.getElementById("snakeGame")
+        .style.display="block";
+
+        startSnake();
+
+    }
 
 }
 
 
-animate();
+function closeGame(){
+
+    document
+    .getElementById("gameArea")
+    .classList.remove("active");
+
+}
 
 
-// =========================
-// EKRAN ÖLÇÜSÜ
-// =========================
+/* ==================================================
+   MEMORY GAME
+================================================== */
 
-window.addEventListener("resize", function() {
+let memoryCards=[];
+let firstCard=null;
+let secondCard=null;
+let lock=false;
+let matched=0;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+
+function startMemory(){
+
+    const grid =
+    document.getElementById("memoryGrid");
+
+    grid.innerHTML="";
+
+    firstCard=null;
+    secondCard=null;
+    lock=false;
+    matched=0;
+
+    document
+    .getElementById("memoryScore")
+    .innerText="0 / 8";
+
+
+    let icons=[
+        "🕷️",
+        "🕸️",
+        "👁️",
+        "💀",
+        "🦂",
+        "🌑",
+        "🔥",
+        "⚡"
+    ];
+
+    memoryCards=[
+        ...icons,
+        ...icons
+    ];
+
+    memoryCards.sort(
+        ()=>Math.random()-.5
+    );
+
+
+    memoryCards.forEach(icon=>{
+
+        const card =
+        document.createElement("div");
+
+        card.className="memory-card";
+
+        card.dataset.icon=icon;
+
+        card.innerText="?";
+
+        card.onclick=()=>flipCard(card);
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function flipCard(card){
+
+    if(
+        lock ||
+        card.classList.contains("open") ||
+        card.classList.contains("matched")
+    )
+    return;
+
+    card.classList.add("open");
+
+    card.innerText =
+    card.dataset.icon;
+
+
+    if(!firstCard){
+
+        firstCard=card;
+
+        return;
+
+    }
+
+
+    secondCard=card;
+
+    lock=true;
+
+
+    if(
+        firstCard.dataset.icon ===
+        secondCard.dataset.icon
+    ){
+
+        firstCard.classList.add("matched");
+
+        secondCard.classList.add("matched");
+
+        matched++;
+
+        document
+        .getElementById("memoryScore")
+        .innerText=
+        matched+" / 8";
+
+        resetCards();
+
+        if(matched===8){
+
+            setTimeout(()=>{
+
+                alert(
+                    "🕷️ Congratulations! You completed the web!"
+                );
+
+            },300);
+
+        }
+
+    }else{
+
+        setTimeout(()=>{
+
+            firstCard.classList.remove("open");
+
+            secondCard.classList.remove("open");
+
+            firstCard.innerText="?";
+
+            secondCard.innerText="?";
+
+            resetCards();
+
+        },800);
+
+    }
+
+}
+
+
+function resetCards(){
+
+    firstCard=null;
+
+    secondCard=null;
+
+    lock=false;
+
+}
+
+
+/* ==================================================
+   AIM GAME
+================================================== */
+
+let aimScore=0;
+
+function startAim(){
+
+    aimScore=0;
+
+    document
+    .getElementById("aimScore")
+    .innerText=0;
+
+    moveTarget();
+
+}
+
+
+function moveTarget(){
+
+    const area =
+    document.getElementById("aimGame");
+
+    const target =
+    document.getElementById("target");
+
+    const maxX =
+    area.clientWidth-60;
+
+    const maxY =
+    area.clientHeight-80;
+
+    target.style.left=
+    Math.random()*maxX+"px";
+
+    target.style.top=
+    60+Math.random()*maxY+"px";
+
+}
+
+
+document
+.getElementById("target")
+.addEventListener("click",()=>{
+
+    aimScore++;
+
+    document
+    .getElementById("aimScore")
+    .innerText=aimScore;
+
+    moveTarget();
+
+});
+
+
+/* ==================================================
+   SNAKE
+================================================== */
+
+const snakeCanvas=
+document.getElementById("snakeCanvas");
+
+const snakeCtx=
+snakeCanvas.getContext("2d");
+
+let snake;
+let food;
+let direction;
+let snakeInterval;
+let snakeScore;
+
+
+function startSnake(){
+
+    snake=[
+        {x:200,y:200},
+        {x:180,y:200},
+        {x:160,y:200}
+    ];
+
+    direction={
+        x:20,
+        y:0
+    };
+
+    snakeScore=0;
+
+    document
+    .getElementById("snakeScore")
+    .innerText=0;
+
+    spawnFood();
+
+    clearInterval(snakeInterval);
+
+    snakeInterval=
+    setInterval(
+        updateSnake,
+        100
+    );
+
+}
+
+
+function spawnFood(){
+
+    food={
+
+        x:
+        Math.floor(
+            Math.random()*24
+        )*20,
+
+        y:
+        Math.floor(
+            Math.random()*18
+        )*20
+
+    };
+
+}
+
+
+function updateSnake(){
+
+    const head={
+        x:snake[0].x+direction.x,
+        y:snake[0].y+direction.y
+    };
+
+
+    if(
+        head.x<0 ||
+        head.x>=500 ||
+        head.y<0 ||
+        head.y>=400 ||
+        snake.some(
+            s=>s.x===head.x &&
+            s.y===head.y
+        )
+    ){
+
+        clearInterval(snakeInterval);
+
+        setTimeout(()=>{
+
+            alert(
+                "Game Over! Score: "+
+                snakeScore
+            );
+
+        },100);
+
+        return;
+
+    }
+
+
+    snake.unshift(head);
+
+
+    if(
+        head.x===food.x &&
+        head.y===food.y
+    ){
+
+        snakeScore++;
+
+        document
+        .getElementById("snakeScore")
+        .innerText=
+        snakeScore;
+
+        spawnFood();
+
+    }else{
+
+        snake.pop();
+
+    }
+
+
+    drawSnake();
+
+}
+
+
+function drawSnake(){
+
+    snakeCtx.fillStyle="#030305";
+
+    snakeCtx.fillRect(
+        0,
+        0,
+        500,
+        400
+    );
+
+
+    snakeCtx.fillStyle="#b000ff";
+
+    snake.forEach(s=>{
+
+        snakeCtx.fillRect(
+            s.x,
+            s.y,
+            18,
+            18
+        );
+
+    });
+
+
+    snakeCtx.fillStyle="#ff00cc";
+
+    snakeCtx.beginPath();
+
+    snakeCtx.arc(
+        food.x+10,
+        food.y+10,
+        8,
+        0,
+        Math.PI*2
+    );
+
+    snakeCtx.fill();
+
+}
+
+
+document.addEventListener(
+"keydown",
+e=>{
+
+    if(
+        (e.key==="ArrowUp" || e.key==="w") &&
+        direction.y===0
+    ){
+
+        direction={
+            x:0,
+            y:-20
+        };
+
+    }
+
+
+    if(
+        (e.key==="ArrowDown" || e.key==="s") &&
+        direction.y===0
+    ){
+
+        direction={
+            x:0,
+            y:20
+        };
+
+    }
+
+
+    if(
+        (e.key==="ArrowLeft" || e.key==="a") &&
+        direction.x===0
+    ){
+
+        direction={
+            x:-20,
+            y:0
+        };
+
+    }
+
+
+    if(
+        (e.key==="ArrowRight" || e.key==="d") &&
+        direction.x===0
+    ){
+
+        direction={
+            x:20,
+            y:0
+        };
+
+    }
+
+});
+
+
+/* ==================================================
+   SPIDER MODE
+================================================== */
+
+function spiderMode(){
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+    alert(
+        "🕷️ Spider Mode activated!\n\nMove your mouse around the screen."
+    );
+
+}
+
+
+/* ==================================================
+   CLICK WEB EFFECT
+================================================== */
+
+document.addEventListener(
+"click",
+e=>{
+
+    const ripple=
+    document.createElement("div");
+
+    ripple.style.position="fixed";
+
+    ripple.style.left=
+    e.clientX+"px";
+
+    ripple.style.top=
+    e.clientY+"px";
+
+    ripple.style.width="10px";
+
+    ripple.style.height="10px";
+
+    ripple.style.border=
+    "2px solid #a000ff";
+
+    ripple.style.borderRadius="50%";
+
+    ripple.style.pointerEvents="none";
+
+    ripple.style.zIndex="9998";
+
+    ripple.style.transform=
+    "translate(-50%,-50%)";
+
+    document.body.appendChild(ripple);
+
+
+    let size=10;
+
+    let opacity=1;
+
+
+    const anim=setInterval(()=>{
+
+        size+=8;
+
+        opacity-=.08;
+
+        ripple.style.width=
+        size+"px";
+
+        ripple.style.height=
+        size+"px";
+
+        ripple.style.opacity=
+        opacity;
+
+        if(opacity<=0){
+
+            clearInterval(anim);
+
+            ripple.remove();
+
+        }
+
+    },20);
 
 });
 
