@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SPIDER WEB</title>
+<title>Spider Web</title>
 
 <style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
 
 *{
     margin:0;
@@ -19,16 +24,18 @@ html{
 }
 
 body{
-    background:#030305;
+    background:#020204;
     color:white;
     font-family:Arial, sans-serif;
     overflow-x:hidden;
     cursor:none;
 }
 
-/* ================= BACKGROUND ================= */
+button{
+    font-family:inherit;
+}
 
-canvas{
+canvas#particles{
     position:fixed;
     inset:0;
     z-index:-2;
@@ -37,55 +44,97 @@ canvas{
 .background{
     position:fixed;
     inset:0;
+    z-index:-3;
+
     background:
-        radial-gradient(circle at 50% 50%, rgba(90,0,120,.18), transparent 45%),
-        radial-gradient(circle at 20% 20%, rgba(0,120,255,.12), transparent 30%);
-    z-index:-1;
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(120,0,255,.18),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(0,100,255,.12),
+            transparent 35%
+        );
 }
 
-/* ================= CUSTOM CURSOR ================= */
+
+/* =====================================================
+   CURSOR
+===================================================== */
 
 .cursor{
     position:fixed;
+
     width:25px;
     height:25px;
-    border:2px solid #fff;
+
+    border:2px solid white;
     border-radius:50%;
+
     pointer-events:none;
+
     transform:translate(-50%,-50%);
-    z-index:9999;
+
+    z-index:99999;
+
+    mix-blend-mode:difference;
+
     transition:
         width .15s,
         height .15s,
         background .15s;
-    mix-blend-mode:difference;
 }
 
 .cursor::after{
     content:"";
+
     position:absolute;
+
     width:5px;
     height:5px;
+
     background:white;
+
     border-radius:50%;
+
     top:50%;
     left:50%;
+
     transform:translate(-50%,-50%);
 }
 
-/* ================= WELCOME ================= */
+
+/* =====================================================
+   WELCOME
+===================================================== */
 
 #welcome{
     position:fixed;
+
     inset:0;
-    background:
-        radial-gradient(circle at center, #18002c 0%, #050008 45%, #000 100%);
+
+    z-index:10000;
+
     display:flex;
+
     justify-content:center;
     align-items:center;
+
     flex-direction:column;
-    z-index:1000;
-    transition:1s;
+
+    background:
+        radial-gradient(
+            circle,
+            #19002c,
+            #050008 50%,
+            #000 100%
+        );
+
+    transition:
+        opacity 1s,
+        transform 1s;
 }
 
 #welcome.hide{
@@ -95,333 +144,665 @@ canvas{
 }
 
 .welcome-small{
-    letter-spacing:8px;
-    color:#b57cff;
+    color:#b66cff;
+
     font-size:14px;
+
+    letter-spacing:8px;
+
     margin-bottom:20px;
 }
 
 .welcome-title{
     font-size:clamp(60px,12vw,150px);
+
     font-weight:900;
+
     letter-spacing:10px;
+
     text-shadow:
-        0 0 20px #9b00ff,
-        0 0 50px #7a00ff,
-        0 0 100px #4000ff;
+        0 0 20px #8b00ff,
+        0 0 50px #7000ff,
+        0 0 100px #3500ff;
 }
 
 .welcome-text{
     margin-top:20px;
+
     color:#aaa;
-    font-size:18px;
+
     text-align:center;
+
+    line-height:1.7;
 }
 
 .enter-btn{
-    margin-top:45px;
-    padding:18px 50px;
-    border:1px solid #a200ff;
-    background:transparent;
-    color:white;
-    font-size:17px;
-    letter-spacing:4px;
+    margin-top:40px;
+
+    padding:17px 45px;
+
+    border:1px solid #a000ff;
+
     border-radius:50px;
+
+    background:transparent;
+
+    color:white;
+
+    letter-spacing:4px;
+
     cursor:none;
+
     transition:.3s;
-    box-shadow:0 0 20px rgba(155,0,255,.3);
 }
 
 .enter-btn:hover{
-    background:#8b00ff;
+    background:#8500ff;
+
     box-shadow:
-        0 0 20px #8b00ff,
-        0 0 60px #8b00ff;
+        0 0 20px #8500ff,
+        0 0 60px #8500ff;
+
     transform:scale(1.08);
 }
 
-/* ================= MAIN ================= */
 
-main{
-    min-height:100vh;
-}
+/* =====================================================
+   HERO
+===================================================== */
 
 .hero{
     min-height:100vh;
+
     display:flex;
+
     justify-content:center;
     align-items:center;
+
     flex-direction:column;
+
     text-align:center;
+
     padding:30px;
 }
 
 .hero h1{
-    font-size:clamp(60px,12vw,150px);
-    letter-spacing:15px;
+    font-size:clamp(55px,11vw,150px);
+
+    letter-spacing:12px;
+
     text-shadow:
-        0 0 15px #8c00ff,
+        0 0 20px #8b00ff,
         0 0 50px #7000ff,
-        0 0 100px #2600ff;
+        0 0 100px #3000ff;
 }
 
 .hero p{
-    color:#aaa;
     margin-top:20px;
+
+    color:#999;
+
     font-size:18px;
 }
 
 .scroll{
     margin-top:70px;
-    color:#777;
+
+    color:#666;
+
     animation:float 2s infinite;
 }
 
 @keyframes float{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(10px)}
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(10px);
+    }
+
 }
 
-/* ================= SECTION ================= */
+
+/* =====================================================
+   GAMES SECTION
+===================================================== */
 
 .games-section{
     min-height:100vh;
+
     padding:100px 7%;
-    background:
-        linear-gradient(
-            rgba(0,0,0,.3),
-            rgba(0,0,0,.7)
-        );
 }
 
 .section-title{
     text-align:center;
+
     font-size:45px;
-    margin-bottom:15px;
-    text-shadow:0 0 20px #8b00ff;
+
+    text-shadow:0 0 25px #8b00ff;
 }
 
 .section-subtitle{
     text-align:center;
-    color:#777;
+
+    color:#666;
+
+    margin-top:15px;
+
     margin-bottom:60px;
 }
 
-/* ================= GAME CARDS ================= */
-
 .games{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:25px;
-    max-width:1100px;
+    max-width:1200px;
+
     margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
 }
+
+
+/* =====================================================
+   GAME CARD
+===================================================== */
 
 .game-card{
     position:relative;
-    min-height:280px;
-    padding:35px 25px;
-    background:rgba(15,15,20,.7);
-    border:1px solid #27202d;
-    border-radius:20px;
-    backdrop-filter:blur(15px);
-    overflow:hidden;
-    transition:.4s;
-    cursor:none;
-}
 
-.game-card::before{
-    content:"";
-    position:absolute;
-    width:150px;
-    height:150px;
-    background:#7200ff;
-    filter:blur(80px);
-    opacity:.15;
-    top:-50px;
-    right:-50px;
+    min-height:300px;
+
+    padding:30px;
+
+    background:
+        rgba(15,15,22,.75);
+
+    border:
+        1px solid #28202f;
+
+    border-radius:20px;
+
+    backdrop-filter:blur(15px);
+
+    transition:.4s;
+
+    overflow:hidden;
 }
 
 .game-card:hover{
-    transform:translateY(-12px) scale(1.02);
-    border-color:#9d00ff;
+
+    transform:
+        translateY(-10px)
+        scale(1.02);
+
+    border-color:#9b00ff;
+
     box-shadow:
-        0 20px 50px rgba(128,0,255,.2),
-        inset 0 0 30px rgba(128,0,255,.05);
+        0 20px 60px
+        rgba(120,0,255,.2);
 }
 
 .game-icon{
     font-size:55px;
+
     margin-bottom:25px;
 }
 
 .game-card h3{
     font-size:25px;
+
     margin-bottom:12px;
 }
 
 .game-card p{
     color:#888;
+
     line-height:1.5;
+
+    min-height:70px;
 }
 
 .play-btn{
-    margin-top:25px;
-    border:1px solid #7d00ff;
+    margin-top:20px;
+
+    padding:10px 22px;
+
+    border:
+        1px solid #8700ff;
+
+    border-radius:25px;
+
     background:transparent;
+
     color:white;
-    padding:10px 20px;
-    border-radius:20px;
+
     cursor:none;
+
     transition:.3s;
 }
 
 .play-btn:hover{
-    background:#7d00ff;
-    box-shadow:0 0 20px #7d00ff;
+    background:#8700ff;
+
+    box-shadow:
+        0 0 25px #8700ff;
 }
 
-/* ================= GAME AREA ================= */
 
-#gameArea{
-    display:none;
+/* =====================================================
+   GAME OVERLAY
+===================================================== */
+
+.game-overlay{
     position:fixed;
+
     inset:0;
-    background:rgba(0,0,0,.96);
-    z-index:500;
+
+    z-index:5000;
+
+    display:none;
+
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    padding:20px;
+
+    background:
+        rgba(0,0,0,.96);
 }
 
-#gameArea.active{
+.game-overlay.active{
     display:flex;
 }
 
 .game-window{
-    width:min(800px,95vw);
-    height:min(600px,80vh);
-    background:#09090d;
-    border:1px solid #5e00a8;
-    border-radius:20px;
-    box-shadow:
-        0 0 50px rgba(100,0,255,.25);
+    width:min(900px,95vw);
+
+    height:min(650px,90vh);
+
     position:relative;
+
     overflow:hidden;
-}
 
-.close-game{
-    position:absolute;
-    right:20px;
-    top:15px;
-    font-size:25px;
-    color:#aaa;
-    cursor:none;
-    z-index:10;
-}
+    background:
+        radial-gradient(
+            circle at center,
+            #110019,
+            #050508
+        );
 
-.close-game:hover{
-    color:white;
+    border:
+        1px solid #6500a8;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 0 80px
+        rgba(130,0,255,.25);
 }
 
 .game-header{
-    height:60px;
+    height:65px;
+
     display:flex;
-    justify-content:space-between;
+
     align-items:center;
+
+    justify-content:space-between;
+
     padding:0 25px;
+
     border-bottom:1px solid #222;
+
+    position:relative;
+
+    z-index:20;
 }
 
 .game-header h2{
-    color:#c084ff;
+    color:#c477ff;
+
+    text-shadow:
+        0 0 15px #8000ff;
 }
 
-/* ================= MEMORY ================= */
+.exit-btn{
+    border:
+        1px solid #ff305f;
+
+    background:transparent;
+
+    color:#ff6688;
+
+    padding:8px 18px;
+
+    border-radius:20px;
+
+    cursor:none;
+
+    transition:.3s;
+}
+
+.exit-btn:hover{
+    background:#ff174f;
+
+    color:white;
+
+    box-shadow:
+        0 0 25px #ff174f;
+}
+
+
+/* =====================================================
+   MEMORY
+===================================================== */
 
 .memory-grid{
-    padding:30px;
+    padding:35px;
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap:15px;
 }
 
 .memory-card{
     height:100px;
-    background:#15151d;
-    border:1px solid #333;
-    border-radius:10px;
+
     display:flex;
+
     justify-content:center;
     align-items:center;
+
     font-size:35px;
-    cursor:none;
-    transition:.3s;
+
+    background:#15151d;
+
+    border:1px solid #333;
+
+    border-radius:12px;
+
+    transition:.25s;
 }
 
 .memory-card:hover{
-    border-color:#9d00ff;
+    border-color:#a000ff;
 }
 
 .memory-card.open{
-    background:#35005c;
+    background:#390061;
 }
 
 .memory-card.matched{
-    background:#102d1c;
+    background:#0b3824;
+
     border-color:#00ff88;
 }
 
-/* ================= AIM GAME ================= */
+
+/* =====================================================
+   AIM GAME
+===================================================== */
 
 #aimGame{
     position:relative;
-    height:calc(100% - 60px);
+
+    height:calc(100% - 65px);
 }
 
 .target{
-    width:50px;
-    height:50px;
-    background:#a000ff;
-    border-radius:50%;
     position:absolute;
+
+    width:55px;
+    height:55px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            white 5%,
+            #ff4cdb 10%,
+            #a000ff 45%,
+            #520080 100%
+        );
+
     box-shadow:
         0 0 20px #a000ff,
-        0 0 50px #a000ff;
-    cursor:none;
+        0 0 60px #a000ff;
 }
 
-/* ================= SNAKE ================= */
+
+/* =====================================================
+   SNAKE
+===================================================== */
+
+#snakeGame{
+    height:calc(100% - 65px);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+}
 
 #snakeCanvas{
-    display:block;
-    margin:auto;
-    background:#030305;
-    max-width:90%;
-    max-height:90%;
+    width:min(700px,90%);
+
+    height:auto;
+
+    background:
+        radial-gradient(
+            circle,
+            #0d0015,
+            #020204
+        );
+
+    border:
+        1px solid #3e005d;
+
+    box-shadow:
+        inset 0 0 50px
+        rgba(120,0,255,.1);
 }
 
-.snake-controls{
-    text-align:center;
+.snake-help{
     margin-top:15px;
+
     color:#777;
+
+    font-size:14px;
 }
 
-/* ================= FOOTER ================= */
+
+/* =====================================================
+   SPIDER MODE
+===================================================== */
+
+#spiderGame{
+    height:calc(100% - 65px);
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(100,0,150,.12),
+            transparent 50%
+        );
+}
+
+.spider{
+    position:absolute;
+
+    font-size:55px;
+
+    transform:
+        translate(-50%,-50%);
+
+    pointer-events:none;
+
+    z-index:10;
+
+    filter:
+        drop-shadow(
+            0 0 15px #a000ff
+        );
+
+    transition:
+        left .05s,
+        top .05s;
+}
+
+.spider-instruction{
+    position:absolute;
+
+    top:30px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    color:#777;
+
+    font-size:14px;
+
+    letter-spacing:2px;
+
+    z-index:5;
+}
+
+.web-dot{
+    position:absolute;
+
+    width:4px;
+    height:4px;
+
+    background:#b45cff;
+
+    border-radius:50%;
+
+    box-shadow:
+        0 0 10px #a000ff;
+
+    pointer-events:none;
+}
+
+
+/* =====================================================
+   HEART WORDS
+===================================================== */
+
+#heartGame{
+    height:calc(100% - 65px);
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle,
+            #26000d,
+            #070004
+        );
+}
+
+.heart-word{
+    position:absolute;
+
+    color:#ff6f9f;
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    transform:
+        translate(-50%,-50%);
+
+    text-shadow:
+        0 0 8px #ff174f;
+
+    white-space:nowrap;
+
+    pointer-events:none;
+
+    animation:
+        heartGrow
+        1.8s
+        forwards;
+}
+
+@keyframes heartGrow{
+
+    0%{
+        transform:
+            translate(-50%,-50%)
+            scale(.2);
+
+        opacity:0;
+    }
+
+    30%{
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+}
+
+.heart-shape{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    width:380px;
+    height:340px;
+
+    pointer-events:none;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
 
 footer{
     padding:70px 20px;
+
     text-align:center;
+
     color:#555;
+
     border-top:1px solid #111;
 }
 
 footer span{
-    color:#9d00ff;
+    color:#a000ff;
 }
 
-/* ================= RESPONSIVE ================= */
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:600px){
 
@@ -435,6 +816,7 @@ footer span{
 
     .welcome-title{
         font-size:55px;
+
         letter-spacing:5px;
     }
 
@@ -443,14 +825,19 @@ footer span{
     }
 
     .memory-grid{
-        grid-template-columns:repeat(4,1fr);
         padding:15px;
+
         gap:8px;
     }
 
     .memory-card{
         height:65px;
+
         font-size:25px;
+    }
+
+    .game-window{
+        height:90vh;
     }
 
 }
@@ -458,7 +845,13 @@ footer span{
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
 
 <div class="background"></div>
 
@@ -466,7 +859,10 @@ footer span{
 
 <div class="cursor" id="cursor"></div>
 
-<!-- ================= WELCOME ================= -->
+
+<!-- =====================================================
+     WELCOME SCREEN
+===================================================== -->
 
 <section id="welcome">
 
@@ -483,23 +879,31 @@ footer span{
         Explore. Play. Survive.
     </div>
 
-    <button class="enter-btn" onclick="enterSite()">
+    <button
+        class="enter-btn"
+        onclick="enterSite()">
+
         ENTER THE WEB
+
     </button>
 
 </section>
 
 
-<!-- ================= MAIN ================= -->
+<!-- =====================================================
+     MAIN SITE
+===================================================== -->
 
 <main>
 
 <section class="hero">
 
-    <h1>SPIDER WEB</h1>
+    <h1>
+        SPIDER WEB
+    </h1>
 
     <p>
-        A dark interactive world full of games and effects.
+        A dark interactive world full of games.
     </p>
 
     <div class="scroll">
@@ -509,6 +913,10 @@ footer span{
 </section>
 
 
+<!-- =====================================================
+     GAMES
+===================================================== -->
+
 <section class="games-section">
 
     <h2 class="section-title">
@@ -516,11 +924,12 @@ footer span{
     </h2>
 
     <p class="section-subtitle">
-        Choose your challenge and enter the web.
+        Choose a game and enter the web.
     </p>
 
 
     <div class="games">
+
 
         <!-- MEMORY -->
 
@@ -530,16 +939,21 @@ footer span{
                 🧠
             </div>
 
-            <h3>Memory</h3>
+            <h3>
+                Memory
+            </h3>
 
             <p>
-                Find matching spider symbols.
+                Find the matching symbols.
                 Test your memory.
             </p>
 
-            <button class="play-btn"
-            onclick="openGame('memory')">
+            <button
+                class="play-btn"
+                onclick="openGame('memory')">
+
                 PLAY
+
             </button>
 
         </div>
@@ -553,16 +967,21 @@ footer span{
                 🎯
             </div>
 
-            <h3>Aim Hunter</h3>
+            <h3>
+                Aim Hunter
+            </h3>
 
             <p>
-                Click the target as quickly
+                Click the target as fast
                 as possible.
             </p>
 
-            <button class="play-btn"
-            onclick="openGame('aim')">
+            <button
+                class="play-btn"
+                onclick="openGame('aim')">
+
                 PLAY
+
             </button>
 
         </div>
@@ -576,16 +995,21 @@ footer span{
                 🐍
             </div>
 
-            <h3>Snake</h3>
+            <h3>
+                Snake
+            </h3>
 
             <p>
-                Eat the glowing food and
-                become longer.
+                Eat fruit, grow your snake,
+                avoid the bombs.
             </p>
 
-            <button class="play-btn"
-            onclick="openGame('snake')">
+            <button
+                class="play-btn"
+                onclick="openGame('snake')">
+
                 PLAY
+
             </button>
 
         </div>
@@ -599,19 +1023,53 @@ footer span{
                 🕷️
             </div>
 
-            <h3>Spider Mode</h3>
+            <h3>
+                Spider Mode
+            </h3>
 
             <p>
-                Move your mouse and control
-                the spider web.
+                Control the spider and
+                create your own web.
             </p>
 
-            <button class="play-btn"
-            onclick="spiderMode()">
+            <button
+                class="play-btn"
+                onclick="openGame('spider')">
+
                 ACTIVATE
+
             </button>
 
         </div>
+
+
+        <!-- HEART WORDS -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                💖
+            </div>
+
+            <h3>
+                Heart Words
+            </h3>
+
+            <p>
+                Write a word and watch it
+                create a growing heart.
+            </p>
+
+            <button
+                class="play-btn"
+                onclick="openHeartGame()">
+
+                CREATE
+
+            </button>
+
+        </div>
+
 
     </div>
 
@@ -620,32 +1078,57 @@ footer span{
 
 <footer>
 
-    Created in the <span>Spider Web</span>.
+    Created in the
+    <span>Spider Web</span>.
 
 </footer>
 
 </main>
 
 
-<!-- ================= GAME WINDOW ================= -->
+<!-- =====================================================
+     GAME OVERLAY
+===================================================== -->
 
-<div id="gameArea">
+<div
+    class="game-overlay"
+    id="gameOverlay">
 
     <div class="game-window">
 
-        <div class="close-game"
-        onclick="closeGame()">
-            ✕
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="game-header">
+
+            <h2 id="gameTitle">
+                Game
+            </h2>
+
+            <button
+                class="exit-btn"
+                onclick="closeGame()">
+
+                EXIT
+
+            </button>
+
         </div>
 
 
-        <!-- MEMORY -->
+        <!-- =================================================
+             MEMORY
+        ================================================= -->
 
-        <div id="memoryGame">
+        <div
+            id="memoryGame"
+            style="display:none">
 
             <div class="game-header">
 
-                <h2>Memory</h2>
+                <h2>
+                    Memory
+                </h2>
 
                 <span id="memoryScore">
                     0 / 8
@@ -653,115 +1136,184 @@ footer span{
 
             </div>
 
-            <div class="memory-grid"
-            id="memoryGrid">
+            <div
+                class="memory-grid"
+                id="memoryGrid">
             </div>
 
         </div>
 
 
-        <!-- AIM -->
+        <!-- =================================================
+             AIM
+        ================================================= -->
 
-        <div id="aimGame"
-        style="display:none">
+        <div
+            id="aimGame"
+            style="display:none">
 
             <div class="game-header">
 
-                <h2>Aim Hunter</h2>
+                <h2>
+                    Aim Hunter
+                </h2>
 
                 <span>
                     Score:
-                    <b id="aimScore">0</b>
+                    <b id="aimScore">
+                        0
+                    </b>
                 </span>
 
             </div>
 
             <div
-            id="target"
-            class="target">
+                id="target"
+                class="target">
             </div>
 
         </div>
 
 
-        <!-- SNAKE -->
+        <!-- =================================================
+             SNAKE
+        ================================================= -->
 
-        <div id="snakeGame"
-        style="display:none">
+        <div
+            id="snakeGame"
+            style="display:none">
 
             <div class="game-header">
 
-                <h2>Snake</h2>
+                <h2>
+                    Snake
+                </h2>
 
                 <span>
                     Score:
-                    <b id="snakeScore">0</b>
+                    <b id="snakeScore">
+                        0
+                    </b>
                 </span>
 
             </div>
 
             <canvas
-            id="snakeCanvas"
-            width="500"
-            height="400">
+                id="snakeCanvas"
+                width="600"
+                height="420">
             </canvas>
 
-            <div class="snake-controls">
-                Use W A S D or Arrow Keys
+            <div class="snake-help">
+                ↑ ↓ ← → &nbsp; | &nbsp;
+                W A S D
             </div>
 
         </div>
+
+
+        <!-- =================================================
+             SPIDER MODE
+        ================================================= -->
+
+        <div
+            id="spiderGame"
+            style="display:none">
+
+            <div class="spider-instruction">
+
+                MOVE YOUR MOUSE TO CONTROL THE SPIDER
+
+            </div>
+
+            <div
+                class="spider"
+                id="spider">
+
+                🕷️
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             HEART WORDS
+        ================================================= -->
+
+        <div
+            id="heartGame"
+            style="display:none">
+
+            <div
+                class="heart-shape"
+                id="heartShape">
+            </div>
+
+        </div>
+
 
     </div>
 
 </div>
 
 
+
 <script>
 
-/* ==================================================
-   CUSTOM CURSOR
-================================================== */
+
+/* =====================================================
+   CURSOR
+===================================================== */
 
 const cursor =
 document.getElementById("cursor");
 
-document.addEventListener("mousemove",(e)=>{
 
-    cursor.style.left =
-    e.clientX+"px";
+document.addEventListener(
+    "mousemove",
+    function(e){
 
-    cursor.style.top =
-    e.clientY+"px";
+        cursor.style.left =
+            e.clientX + "px";
+
+        cursor.style.top =
+            e.clientY + "px";
+
+    }
+);
+
+
+document
+.querySelectorAll("button,.game-card")
+.forEach(function(el){
+
+    el.addEventListener(
+        "mouseenter",
+        function(){
+
+            cursor.style.width="45px";
+            cursor.style.height="45px";
+
+        }
+    );
+
+    el.addEventListener(
+        "mouseleave",
+        function(){
+
+            cursor.style.width="25px";
+            cursor.style.height="25px";
+
+        }
+    );
 
 });
 
 
-document.querySelectorAll("button,.game-card,.game-card *")
-.forEach(el=>{
-
-    el.addEventListener("mouseenter",()=>{
-
-        cursor.style.width="45px";
-        cursor.style.height="45px";
-        cursor.style.background="rgba(255,255,255,.1)";
-
-    });
-
-    el.addEventListener("mouseleave",()=>{
-
-        cursor.style.width="25px";
-        cursor.style.height="25px";
-        cursor.style.background="transparent";
-
-    });
-
-});
-
-
-/* ==================================================
+/* =====================================================
    WELCOME
-================================================== */
+===================================================== */
 
 function enterSite(){
 
@@ -772,47 +1324,48 @@ function enterSite(){
 }
 
 
-/* ==================================================
+/* =====================================================
    PARTICLES
-================================================== */
+===================================================== */
 
-const canvas =
+const particleCanvas =
 document.getElementById("particles");
 
-const ctx =
-canvas.getContext("2d");
+const particleCtx =
+particleCanvas.getContext("2d");
 
 let particles=[];
 
-function resizeCanvas(){
 
-    canvas.width =
-    window.innerWidth;
+function resizeParticles(){
 
-    canvas.height =
-    window.innerHeight;
+    particleCanvas.width =
+        window.innerWidth;
+
+    particleCanvas.height =
+        window.innerHeight;
 
 }
 
-resizeCanvas();
+resizeParticles();
 
 window.addEventListener(
-"resize",
-resizeCanvas
+    "resize",
+    resizeParticles
 );
 
 
-for(let i=0;i<100;i++){
+for(let i=0;i<120;i++){
 
     particles.push({
 
-        x:Math.random()*innerWidth,
+        x:Math.random()*window.innerWidth,
 
-        y:Math.random()*innerHeight,
+        y:Math.random()*window.innerHeight,
 
         size:Math.random()*2+1,
 
-        speed:Math.random()*.5+.1
+        speed:Math.random()*.6+.1
 
     });
 
@@ -821,23 +1374,29 @@ for(let i=0;i<100;i++){
 
 function animateParticles(){
 
-    ctx.clearRect(
+    particleCtx.clearRect(
         0,
         0,
-        canvas.width,
-        canvas.height
+        particleCanvas.width,
+        particleCanvas.height
     );
 
-    particles.forEach(p=>{
+
+    particles.forEach(function(p){
 
         p.y -= p.speed;
 
-        if(p.y<0)
-            p.y=canvas.height;
+        if(p.y < 0){
 
-        ctx.beginPath();
+            p.y =
+                particleCanvas.height;
 
-        ctx.arc(
+        }
+
+
+        particleCtx.beginPath();
+
+        particleCtx.arc(
             p.x,
             p.y,
             p.size,
@@ -845,12 +1404,13 @@ function animateParticles(){
             Math.PI*2
         );
 
-        ctx.fillStyle=
-        "rgba(170,70,255,.5)";
+        particleCtx.fillStyle =
+            "rgba(170,70,255,.55)";
 
-        ctx.fill();
+        particleCtx.fill();
 
     });
+
 
     requestAnimationFrame(
         animateParticles
@@ -861,29 +1421,50 @@ function animateParticles(){
 animateParticles();
 
 
-/* ==================================================
+/* =====================================================
    GAME SYSTEM
-================================================== */
+===================================================== */
+
+const overlay =
+document.getElementById("gameOverlay");
+
+
+function hideAllGames(){
+
+    document
+    .getElementById("memoryGame")
+    .style.display="none";
+
+    document
+    .getElementById("aimGame")
+    .style.display="none";
+
+    document
+    .getElementById("snakeGame")
+    .style.display="none";
+
+    document
+    .getElementById("spiderGame")
+    .style.display="none";
+
+    document
+    .getElementById("heartGame")
+    .style.display="none";
+
+}
+
 
 function openGame(game){
 
-    document
-    .getElementById("gameArea")
-    .classList.add("active");
+    hideAllGames();
 
-    document.getElementById("memoryGame")
-    .style.display="none";
-
-    document.getElementById("aimGame")
-    .style.display="none";
-
-    document.getElementById("snakeGame")
-    .style.display="none";
+    overlay.classList.add("active");
 
 
     if(game==="memory"){
 
-        document.getElementById("memoryGame")
+        document
+        .getElementById("memoryGame")
         .style.display="block";
 
         startMemory();
@@ -893,7 +1474,8 @@ function openGame(game){
 
     if(game==="aim"){
 
-        document.getElementById("aimGame")
+        document
+        .getElementById("aimGame")
         .style.display="block";
 
         startAim();
@@ -903,10 +1485,22 @@ function openGame(game){
 
     if(game==="snake"){
 
-        document.getElementById("snakeGame")
+        document
+        .getElementById("snakeGame")
         .style.display="block";
 
         startSnake();
+
+    }
+
+
+    if(game==="spider"){
+
+        document
+        .getElementById("spiderGame")
+        .style.display="block";
+
+        startSpider();
 
     }
 
@@ -915,42 +1509,49 @@ function openGame(game){
 
 function closeGame(){
 
-    document
-    .getElementById("gameArea")
-    .classList.remove("active");
+    overlay.classList.remove("active");
+
+    clearInterval(snakeInterval);
+
+    stopHeartGame();
 
 }
 
 
-/* ==================================================
+/* =====================================================
    MEMORY GAME
-================================================== */
+===================================================== */
 
-let memoryCards=[];
 let firstCard=null;
 let secondCard=null;
-let lock=false;
-let matched=0;
+
+let memoryLock=false;
+
+let matchedCards=0;
 
 
 function startMemory(){
 
     const grid =
-    document.getElementById("memoryGrid");
+        document.getElementById("memoryGrid");
 
     grid.innerHTML="";
 
     firstCard=null;
     secondCard=null;
-    lock=false;
-    matched=0;
+
+    memoryLock=false;
+
+    matchedCards=0;
+
 
     document
     .getElementById("memoryScore")
     .innerText="0 / 8";
 
 
-    let icons=[
+    const icons=[
+
         "🕷️",
         "🕸️",
         "👁️",
@@ -959,30 +1560,41 @@ function startMemory(){
         "🌑",
         "🔥",
         "⚡"
+
     ];
 
-    memoryCards=[
+
+    const cards=[
         ...icons,
         ...icons
     ];
 
-    memoryCards.sort(
+
+    cards.sort(
         ()=>Math.random()-.5
     );
 
 
-    memoryCards.forEach(icon=>{
+    cards.forEach(function(icon){
 
         const card =
-        document.createElement("div");
+            document.createElement("div");
 
-        card.className="memory-card";
-
-        card.dataset.icon=icon;
+        card.className=
+            "memory-card";
 
         card.innerText="?";
 
-        card.onclick=()=>flipCard(card);
+        card.dataset.icon=
+            icon;
+
+
+        card.onclick=function(){
+
+            flipCard(card);
+
+        };
+
 
         grid.appendChild(card);
 
@@ -994,16 +1606,20 @@ function startMemory(){
 function flipCard(card){
 
     if(
-        lock ||
+        memoryLock ||
         card.classList.contains("open") ||
         card.classList.contains("matched")
-    )
-    return;
+    ){
+
+        return;
+
+    }
+
 
     card.classList.add("open");
 
     card.innerText =
-    card.dataset.icon;
+        card.dataset.icon;
 
 
     if(!firstCard){
@@ -1017,7 +1633,7 @@ function flipCard(card){
 
     secondCard=card;
 
-    lock=true;
+    memoryLock=true;
 
 
     if(
@@ -1029,30 +1645,35 @@ function flipCard(card){
 
         secondCard.classList.add("matched");
 
-        matched++;
+        matchedCards++;
+
 
         document
         .getElementById("memoryScore")
-        .innerText=
-        matched+" / 8";
+        .innerText =
+            matchedCards+" / 8";
 
-        resetCards();
 
-        if(matched===8){
+        resetMemoryCards();
 
-            setTimeout(()=>{
+
+        if(matchedCards===8){
+
+            setTimeout(function(){
 
                 alert(
-                    "🕷️ Congratulations! You completed the web!"
+                    "🕷️ Bütün cütləri tapdın!"
                 );
 
             },300);
 
         }
 
-    }else{
+    }
 
-        setTimeout(()=>{
+    else{
+
+        setTimeout(function(){
 
             firstCard.classList.remove("open");
 
@@ -1062,31 +1683,32 @@ function flipCard(card){
 
             secondCard.innerText="?";
 
-            resetCards();
+            resetMemoryCards();
 
-        },800);
+        },700);
 
     }
 
 }
 
 
-function resetCards(){
+function resetMemoryCards(){
 
     firstCard=null;
 
     secondCard=null;
 
-    lock=false;
+    memoryLock=false;
 
 }
 
 
-/* ==================================================
-   AIM GAME
-================================================== */
+/* =====================================================
+   AIM
+===================================================== */
 
 let aimScore=0;
+
 
 function startAim(){
 
@@ -1094,7 +1716,7 @@ function startAim(){
 
     document
     .getElementById("aimScore")
-    .innerText=0;
+    .innerText="0";
 
     moveTarget();
 
@@ -1104,103 +1726,223 @@ function startAim(){
 function moveTarget(){
 
     const area =
-    document.getElementById("aimGame");
+        document.getElementById("aimGame");
 
     const target =
-    document.getElementById("target");
+        document.getElementById("target");
+
 
     const maxX =
-    area.clientWidth-60;
+        area.clientWidth-70;
 
     const maxY =
-    area.clientHeight-80;
+        area.clientHeight-130;
 
-    target.style.left=
-    Math.random()*maxX+"px";
 
-    target.style.top=
-    60+Math.random()*maxY+"px";
+    target.style.left =
+        Math.max(
+            10,
+            Math.random()*maxX
+        )+"px";
+
+
+    target.style.top =
+        75+
+        Math.max(
+            10,
+            Math.random()*maxY
+        )+"px";
 
 }
 
 
 document
 .getElementById("target")
-.addEventListener("click",()=>{
+.addEventListener(
+    "click",
+    function(){
 
-    aimScore++;
+        aimScore++;
 
-    document
-    .getElementById("aimScore")
-    .innerText=aimScore;
+        document
+        .getElementById("aimScore")
+        .innerText=
+            aimScore;
 
-    moveTarget();
+        moveTarget();
 
-});
+    }
+);
 
 
-/* ==================================================
+/* =====================================================
    SNAKE
-================================================== */
+===================================================== */
 
-const snakeCanvas=
+const snakeCanvas =
 document.getElementById("snakeCanvas");
 
-const snakeCtx=
+const snakeCtx =
 snakeCanvas.getContext("2d");
 
-let snake;
-let food;
-let direction;
-let snakeInterval;
-let snakeScore;
+
+let snake=[];
+
+let snakeDirection={
+    x:20,
+    y:0
+};
+
+let snakeFood=null;
+
+let snakeInterval=null;
+
+let snakeScore=0;
+
+
+/* fruit types */
+
+const fruits=[
+
+    {
+        emoji:"🍎",
+        points:10
+    },
+
+    {
+        emoji:"🍐",
+        points:15
+    },
+
+    {
+        emoji:"🍊",
+        points:20
+    },
+
+    {
+        emoji:"🍇",
+        points:25
+    },
+
+    {
+        emoji:"🍓",
+        points:30
+    },
+
+    {
+        emoji:"💣",
+        points:-20,
+        bomb:true
+    }
+
+];
 
 
 function startSnake(){
 
+    clearInterval(snakeInterval);
+
+
     snake=[
-        {x:200,y:200},
-        {x:180,y:200},
-        {x:160,y:200}
+
+        {x:300,y:210},
+
+        {x:280,y:210},
+
+        {x:260,y:210},
+
+        {x:240,y:210}
+
     ];
 
-    direction={
+
+    snakeDirection={
         x:20,
         y:0
     };
 
+
     snakeScore=0;
+
 
     document
     .getElementById("snakeScore")
-    .innerText=0;
+    .innerText="0";
 
-    spawnFood();
 
-    clearInterval(snakeInterval);
+    createSnakeFood();
 
-    snakeInterval=
-    setInterval(
-        updateSnake,
-        100
-    );
+
+    drawSnake();
+
+
+    snakeInterval =
+        setInterval(
+            updateSnake,
+            120
+        );
 
 }
 
 
-function spawnFood(){
+function createSnakeFood(){
 
-    food={
+    const columns =
+        snakeCanvas.width / 20;
 
-        x:
-        Math.floor(
-            Math.random()*24
-        )*20,
+    const rows =
+        snakeCanvas.height / 20;
 
-        y:
-        Math.floor(
-            Math.random()*18
-        )*20
+
+    let position;
+
+
+    do{
+
+        position={
+
+            x:
+                Math.floor(
+                    Math.random()*columns
+                )*20,
+
+            y:
+                Math.floor(
+                    Math.random()*rows
+                )*20
+
+        };
+
+    }
+
+    while(
+        snake.some(
+            part =>
+            part.x===position.x &&
+            part.y===position.y
+        )
+    );
+
+
+    const randomFruit =
+        fruits[
+            Math.floor(
+                Math.random()*fruits.length
+            )
+        ];
+
+
+    snakeFood={
+
+        x:position.x,
+
+        y:position.y,
+
+        emoji:randomFruit.emoji,
+
+        points:randomFruit.points,
+
+        bomb:randomFruit.bomb || false
 
     };
 
@@ -1210,32 +1952,50 @@ function spawnFood(){
 function updateSnake(){
 
     const head={
-        x:snake[0].x+direction.x,
-        y:snake[0].y+direction.y
+
+        x:
+            snake[0].x+
+            snakeDirection.x,
+
+        y:
+            snake[0].y+
+            snakeDirection.y
+
     };
 
 
+    /* wall collision */
+
     if(
-        head.x<0 ||
-        head.x>=500 ||
-        head.y<0 ||
-        head.y>=400 ||
+
+        head.x < 0 ||
+
+        head.x >= snakeCanvas.width ||
+
+        head.y < 0 ||
+
+        head.y >= snakeCanvas.height
+
+    ){
+
+        snakeGameOver();
+
+        return;
+
+    }
+
+
+    /* body collision */
+
+    if(
         snake.some(
-            s=>s.x===head.x &&
-            s.y===head.y
+            part =>
+            part.x===head.x &&
+            part.y===head.y
         )
     ){
 
-        clearInterval(snakeInterval);
-
-        setTimeout(()=>{
-
-            alert(
-                "Game Over! Score: "+
-                snakeScore
-            );
-
-        },100);
+        snakeGameOver();
 
         return;
 
@@ -1245,21 +2005,54 @@ function updateSnake(){
     snake.unshift(head);
 
 
+    /* food */
+
     if(
-        head.x===food.x &&
-        head.y===food.y
+
+        head.x===snakeFood.x &&
+        head.y===snakeFood.y
+
     ){
 
-        snakeScore++;
+        snakeScore +=
+            snakeFood.points;
+
+
+        if(snakeScore<0){
+
+            snakeScore=0;
+
+        }
+
 
         document
         .getElementById("snakeScore")
         .innerText=
-        snakeScore;
+            snakeScore;
 
-        spawnFood();
 
-    }else{
+        /* bomb */
+
+        if(snakeFood.bomb){
+
+            /* bomb eats part of tail */
+
+            if(snake.length>3){
+
+                snake.pop();
+
+                snake.pop();
+
+            }
+
+        }
+
+
+        createSnakeFood();
+
+    }
+
+    else{
 
         snake.pop();
 
@@ -1273,192 +2066,650 @@ function updateSnake(){
 
 function drawSnake(){
 
-    snakeCtx.fillStyle="#030305";
-
-    snakeCtx.fillRect(
+    snakeCtx.clearRect(
         0,
         0,
-        500,
-        400
+        snakeCanvas.width,
+        snakeCanvas.height
     );
 
 
-    snakeCtx.fillStyle="#b000ff";
+    /* grid */
 
-    snake.forEach(s=>{
+    snakeCtx.strokeStyle=
+        "rgba(150,0,255,.08)";
 
-        snakeCtx.fillRect(
-            s.x,
-            s.y,
-            18,
-            18
+
+    for(
+        let x=0;
+        x<snakeCanvas.width;
+        x+=20
+    ){
+
+        snakeCtx.beginPath();
+
+        snakeCtx.moveTo(x,0);
+
+        snakeCtx.lineTo(
+            x,
+            snakeCanvas.height
         );
 
-    });
+        snakeCtx.stroke();
+
+    }
 
 
-    snakeCtx.fillStyle="#ff00cc";
+    for(
+        let y=0;
+        y<snakeCanvas.height;
+        y+=20
+    ){
 
-    snakeCtx.beginPath();
+        snakeCtx.beginPath();
 
-    snakeCtx.arc(
-        food.x+10,
-        food.y+10,
-        8,
-        0,
-        Math.PI*2
+        snakeCtx.moveTo(0,y);
+
+        snakeCtx.lineTo(
+            snakeCanvas.width,
+            y
+        );
+
+        snakeCtx.stroke();
+
+    }
+
+
+    /* snake */
+
+    snake.forEach(
+        function(part,index){
+
+            snakeCtx.font=
+                "20px Arial";
+
+            snakeCtx.textAlign=
+                "center";
+
+            snakeCtx.textBaseline=
+                "middle";
+
+
+            if(index===0){
+
+                snakeCtx.font=
+                    "24px Arial";
+
+                snakeCtx.fillText(
+                    "🐍",
+                    part.x+10,
+                    part.y+10
+                );
+
+            }
+
+            else{
+
+                snakeCtx.fillStyle=
+                    "#9d00ff";
+
+                snakeCtx.shadowColor=
+                    "#a000ff";
+
+                snakeCtx.shadowBlur=10;
+
+                snakeCtx.fillRect(
+                    part.x+2,
+                    part.y+2,
+                    16,
+                    16
+                );
+
+                snakeCtx.shadowBlur=0;
+
+            }
+
+        }
     );
 
-    snakeCtx.fill();
+
+    /* food */
+
+    snakeCtx.font=
+        "24px Arial";
+
+    snakeCtx.textAlign=
+        "center";
+
+    snakeCtx.textBaseline=
+        "middle";
+
+
+    snakeCtx.fillText(
+
+        snakeFood.emoji,
+
+        snakeFood.x+10,
+
+        snakeFood.y+10
+
+    );
 
 }
 
 
-document.addEventListener(
-"keydown",
-e=>{
+function snakeGameOver(){
 
-    if(
-        (e.key==="ArrowUp" || e.key==="w") &&
-        direction.y===0
-    ){
-
-        direction={
-            x:0,
-            y:-20
-        };
-
-    }
+    clearInterval(snakeInterval);
 
 
-    if(
-        (e.key==="ArrowDown" || e.key==="s") &&
-        direction.y===0
-    ){
+    setTimeout(
+        function(){
 
-        direction={
-            x:0,
-            y:20
-        };
+            alert(
+                "🐍 Game Over!\n\nScore: "+
+                snakeScore
+            );
 
-    }
-
-
-    if(
-        (e.key==="ArrowLeft" || e.key==="a") &&
-        direction.x===0
-    ){
-
-        direction={
-            x:-20,
-            y:0
-        };
-
-    }
-
-
-    if(
-        (e.key==="ArrowRight" || e.key==="d") &&
-        direction.x===0
-    ){
-
-        direction={
-            x:20,
-            y:0
-        };
-
-    }
-
-});
-
-
-/* ==================================================
-   SPIDER MODE
-================================================== */
-
-function spiderMode(){
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-    alert(
-        "🕷️ Spider Mode activated!\n\nMove your mouse around the screen."
+        },
+        100
     );
 
 }
 
 
-/* ==================================================
-   CLICK WEB EFFECT
-================================================== */
+/* keyboard */
 
 document.addEventListener(
-"click",
-e=>{
+    "keydown",
+    function(e){
 
-    const ripple=
-    document.createElement("div");
-
-    ripple.style.position="fixed";
-
-    ripple.style.left=
-    e.clientX+"px";
-
-    ripple.style.top=
-    e.clientY+"px";
-
-    ripple.style.width="10px";
-
-    ripple.style.height="10px";
-
-    ripple.style.border=
-    "2px solid #a000ff";
-
-    ripple.style.borderRadius="50%";
-
-    ripple.style.pointerEvents="none";
-
-    ripple.style.zIndex="9998";
-
-    ripple.style.transform=
-    "translate(-50%,-50%)";
-
-    document.body.appendChild(ripple);
+        const key =
+            e.key.toLowerCase();
 
 
-    let size=10;
+        if(
+            (key==="arrowup" || key==="w") &&
+            snakeDirection.y===0
+        ){
 
-    let opacity=1;
-
-
-    const anim=setInterval(()=>{
-
-        size+=8;
-
-        opacity-=.08;
-
-        ripple.style.width=
-        size+"px";
-
-        ripple.style.height=
-        size+"px";
-
-        ripple.style.opacity=
-        opacity;
-
-        if(opacity<=0){
-
-            clearInterval(anim);
-
-            ripple.remove();
+            snakeDirection={
+                x:0,
+                y:-20
+            };
 
         }
 
-    },20);
 
-});
+        else if(
+            (key==="arrowdown" || key==="s") &&
+            snakeDirection.y===0
+        ){
+
+            snakeDirection={
+                x:0,
+                y:20
+            };
+
+        }
+
+
+        else if(
+            (key==="arrowleft" || key==="a") &&
+            snakeDirection.x===0
+        ){
+
+            snakeDirection={
+                x:-20,
+                y:0
+            };
+
+        }
+
+
+        else if(
+            (key==="arrowright" || key==="d") &&
+            snakeDirection.x===0
+        ){
+
+            snakeDirection={
+                x:20,
+                y:0
+            };
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SPIDER MODE
+===================================================== */
+
+const spider =
+document.getElementById("spider");
+
+const spiderGame =
+document.getElementById("spiderGame");
+
+let spiderDots=[];
+
+
+function startSpider(){
+
+    spider.style.left=
+        "50%";
+
+    spider.style.top=
+        "50%";
+
+
+    spiderDots=[];
+
+
+    document
+    .querySelectorAll(".web-dot")
+    .forEach(
+        dot => dot.remove()
+    );
+
+}
+
+
+spiderGame.addEventListener(
+    "mousemove",
+    function(e){
+
+        const rect =
+            spiderGame.getBoundingClientRect();
+
+
+        const x =
+            e.clientX-
+            rect.left;
+
+        const y =
+            e.clientY-
+            rect.top;
+
+
+        spider.style.left=
+            x+"px";
+
+        spider.style.top=
+            y+"px";
+
+
+        /* web dots */
+
+        const dot =
+            document.createElement("div");
+
+        dot.className=
+            "web-dot";
+
+        dot.style.left=
+            x+"px";
+
+        dot.style.top=
+            y+"px";
+
+
+        spiderGame.appendChild(dot);
+
+
+        spiderDots.push(dot);
+
+
+        if(spiderDots.length>180){
+
+            const old =
+                spiderDots.shift();
+
+            old.remove();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   HEART WORD GAME
+===================================================== */
+
+let heartTimer=null;
+
+let heartRunning=false;
+
+let heartWord="LOVE";
+
+
+function openHeartGame(){
+
+    const word =
+        prompt(
+            "Ürəkdə görünəcək adı və ya sözü yaz:"
+        );
+
+
+    if(
+        word===null ||
+        word.trim()===""
+    ){
+
+        return;
+
+    }
+
+
+    heartWord =
+        word.trim();
+
+
+    hideAllGames();
+
+
+    overlay.classList.add("active");
+
+
+    document
+    .getElementById("heartGame")
+    .style.display="block";
+
+
+    startHeartGame();
+
+}
+
+
+function startHeartGame(){
+
+    const area =
+        document.getElementById("heartGame");
+
+
+    area.innerHTML=
+        '<div class="heart-shape" id="heartShape"></div>';
+
+
+    heartRunning=true;
+
+
+    const rect =
+        area.getBoundingClientRect();
+
+
+    let created=0;
+
+
+    heartTimer =
+        setInterval(
+            function(){
+
+                if(!heartRunning){
+
+                    return;
+
+                }
+
+
+                const x =
+                    rect.width/2+
+                    Math.cos(
+                        created*.35
+                    )*
+                    Math.min(
+                        180,
+                        rect.width*.28
+                    );
+
+
+                const y =
+                    rect.height/2+
+                    Math.sin(
+                        created*.35
+                    )*
+                    Math.min(
+                        150,
+                        rect.height*.28
+                    );
+
+
+                createHeartWord(
+                    x,
+                    y,
+                    created
+                );
+
+
+                created++;
+
+
+                /*
+                    ekran kifayət qədər
+                    dolanda dayandır
+                */
+
+                if(
+                    created>=180
+                ){
+
+                    stopHeartGame();
+
+                }
+
+            },
+            100
+        );
+
+}
+
+
+function createHeartWord(
+    x,
+    y,
+    index
+){
+
+    const area =
+        document.getElementById("heartGame");
+
+
+    const word =
+        document.createElement("div");
+
+
+    word.className=
+        "heart-word";
+
+
+    word.innerText=
+        heartWord;
+
+
+    /*
+       Ürək əyrisi
+    */
+
+    const t =
+        index*.22;
+
+
+    const scale =
+        Math.min(
+            1,
+            .25+
+            index/180
+        );
+
+
+    const centerX =
+        area.clientWidth/2;
+
+
+    const centerY =
+        area.clientHeight/2;
+
+
+    const heartX =
+        16*
+        Math.pow(
+            Math.sin(t),
+            3
+        );
+
+
+    const heartY =
+        -(
+            13*Math.cos(t)
+            -5*Math.cos(2*t)
+            -2*Math.cos(3*t)
+            -Math.cos(4*t)
+        );
+
+
+    word.style.left =
+        centerX+
+        heartX*
+        13*
+        scale+
+        "px";
+
+
+    word.style.top =
+        centerY+
+        heartY*
+        13*
+        scale+
+        "px";
+
+
+    word.style.fontSize =
+        (
+            7+
+            scale*5
+        )+"px";
+
+
+    area.appendChild(word);
+
+
+    /*
+       maksimum element sayı
+    */
+
+    const words =
+        area.querySelectorAll(
+            ".heart-word"
+        );
+
+
+    if(words.length>500){
+
+        stopHeartGame();
+
+    }
+
+}
+
+
+function stopHeartGame(){
+
+    heartRunning=false;
+
+    clearInterval(heartTimer);
+
+}
+
+
+/* =====================================================
+   CLICK RIPPLE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function(e){
+
+        const ripple =
+            document.createElement("div");
+
+
+        ripple.style.position=
+            "fixed";
+
+        ripple.style.left=
+            e.clientX+"px";
+
+        ripple.style.top=
+            e.clientY+"px";
+
+        ripple.style.width="10px";
+
+        ripple.style.height="10px";
+
+        ripple.style.border=
+            "2px solid #a000ff";
+
+        ripple.style.borderRadius=
+            "50%";
+
+        ripple.style.pointerEvents=
+            "none";
+
+        ripple.style.zIndex=
+            "99998";
+
+        ripple.style.transform=
+            "translate(-50%,-50%)";
+
+
+        document.body.appendChild(
+            ripple
+        );
+
+
+        let size=10;
+
+        let opacity=1;
+
+
+        const animation =
+            setInterval(
+                function(){
+
+                    size+=8;
+
+                    opacity-=.08;
+
+
+                    ripple.style.width=
+                        size+"px";
+
+                    ripple.style.height=
+                        size+"px";
+
+                    ripple.style.opacity=
+                        opacity;
+
+
+                    if(opacity<=0){
+
+                        clearInterval(
+                            animation
+                        );
+
+                        ripple.remove();
+
+                    }
+
+                },
+                20
+            );
+
+    }
+);
 
 </script>
 
